@@ -35,111 +35,127 @@ class _HomeState extends State<Home> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          leading: Icon(Icons.person),
-          title: Text("Github Prifile Viewer"),
+          leading: Image.asset(
+            "assets/img/github.png",
+            width: 20,
+            height: 20,
+          ),
+          title: TextField(
+            cursorColor: Colors.white,
+            decoration: InputDecoration(
+              hintText: "Search users",
+              contentPadding: EdgeInsets.symmetric(
+                vertical: 15.0,
+              ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.white,
+                  width: 0.5,
+                ),
+                borderRadius: BorderRadius.circular(
+                  30,
+                ),
+              ),
+              prefixIcon: Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  print(_userSearch);
+                  _fetchData();
+                },
+              ),
+            ),
+            onChanged: (String value) {
+              setState(() {
+                _userSearch = value;
+              });
+            },
+          ),
         ),
-        body: Flex(
-          direction: Axis.vertical,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: Container(
-                // color: Gradient(colors: []),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    Colors.black87,
-                    Colors.black,
-                  ]),
-                ),
-                padding: EdgeInsets.all(
-                  10.0,
-                ),
-                child: TextField(
-                  cursorColor: Colors.white,
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(
-                      vertical: 15.0,
-                    ),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                        width: 0.5,
+        body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: _userData == null
+                ? [
+                    Center(
+                      child: Image.asset(
+                        "assets/img/github.png",
+                        width: 100,
+                        height: 100,
                       ),
-                      borderRadius: BorderRadius.circular(
-                        30,
-                      ),
-                    ),
-                    prefixIcon: Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        print(_userSearch);
-                        _fetchData();
-                      },
-                    ),
-                  ),
-                  onChanged: (String value) {
-                    setState(() {
-                      _userSearch = value;
-                    });
-                  },
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.black87,
-                      Colors.black,
-                    ],
-                  ),
-                ),
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(
-                      height: 10.0,
-                    ),
-                    Text(
-                      _userData == null ? "No User found" : _userData["login"],
-                    ),
-                    CachedNetworkImage(
-                      width: 100,
-                      height: 100,
-                      imageUrl: _userData["avatar_url"],
-                      placeholder: (context, url) {
-                        return Image.asset("assets/img/github.png");
-                      },
-                      errorWidget: (context, url, error) => Icon(Icons.error),
                     )
-                  ],
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    Colors.blue,
-                    Colors.lightBlueAccent,
-                    Colors.blueAccent,
-                  ]),
-                ),
-                child: Column(),
-              ),
-            )
-          ],
-        ));
+                  ]
+                : [
+                    Flex(
+                      direction: Axis.vertical,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 4,
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Colors.black87,
+                                  Colors.black,
+                                ],
+                              ),
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 10.0,
+                                ),
+                                Text(
+                                  _userData == null
+                                      ? "No User found"
+                                      : _userData["login"],
+                                ),
+                                CachedNetworkImage(
+                                  width: 100,
+                                  height: 100,
+                                  imageUrl: _userData["avatar_url"],
+                                  placeholder: (context, url) {
+                                    return Image.asset("assets/img/github.png");
+                                  },
+                                  errorWidget: (context, url, error) =>
+                                      Icon(Icons.error),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                                Colors.blue,
+                                Colors.lightBlueAccent,
+                                Colors.blueAccent,
+                              ]),
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                Row(children: <Widget>[
+                                  Image.asset("assets/img/following.png"),
+                                  _userData == null || _userData["login"]
+                                      ? Text("")
+                                      : Text("")
+                                ]),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ]));
   }
 }
