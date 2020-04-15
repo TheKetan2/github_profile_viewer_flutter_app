@@ -12,20 +12,22 @@ class _HomeState extends State<Home> {
   dynamic _userData, _userFollowers, _userFollowing, _userRepo;
   String _userSearch = "theketan2";
   String _baseUrl = "https://api.github.com/users/";
+  bool _isSearching = false;
 
   _fetchData() async {
     http.Response userDataResponse = await http.get(_baseUrl + _userSearch);
-    http.Response followersResponse =
-        await http.get(_baseUrl + _userSearch + "/followers");
-    http.Response followingResponse =
-        await http.get(_baseUrl + _userSearch + "/following");
-    http.Response userRepoResponse =
-        await http.get(_baseUrl + _userSearch + "/repos");
+    // http.Response followersResponse =
+    //     await http.get(_baseUrl + _userSearch + "/followers");
+    // http.Response followingResponse =
+    //     await http.get(_baseUrl + _userSearch + "/following");
+    // http.Response userRepoResponse =
+    //     await http.get(_baseUrl + _userSearch + "/repos");
     setState(() {
       _userData = jsonDecode(userDataResponse.body);
-      _userFollowers = jsonDecode(followersResponse.body);
-      _userFollowing = jsonDecode(followingResponse.body);
-      _userRepo = jsonDecode(userRepoResponse.body);
+      // _userFollowers = jsonDecode(followersResponse.body);
+      // _userFollowing = jsonDecode(followingResponse.body);
+      // _userRepo = jsonDecode(userRepoResponse.body);
+      _isSearching = false;
     });
     print(_userData);
   }
@@ -33,129 +35,340 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          elevation: 0,
-          leading: Image.asset(
-            "assets/img/github.png",
-            width: 20,
-            height: 20,
-          ),
-          title: TextField(
-            cursorColor: Colors.white,
-            decoration: InputDecoration(
-              hintText: "Search users",
-              contentPadding: EdgeInsets.symmetric(
-                vertical: 15.0,
-              ),
-              border: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.white,
-                  width: 0.5,
-                ),
-                borderRadius: BorderRadius.circular(
-                  30,
-                ),
-              ),
-              prefixIcon: Icon(
-                Icons.person,
+      appBar: AppBar(
+        elevation: 0,
+        // leading: Image.asset(
+        //   "assets/img/github.png",
+        //   width: 20,
+        //   height: 20,
+        // ),
+        title: TextField(
+          cursorColor: Colors.white,
+          decoration: InputDecoration(
+            hintText: "Search users",
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 15.0,
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
                 color: Colors.white,
+                width: 0.5,
               ),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  Icons.search,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  print(_userSearch);
-                  _fetchData();
-                },
+              borderRadius: BorderRadius.circular(
+                10.0,
               ),
             ),
-            onChanged: (String value) {
-              setState(() {
-                _userSearch = value;
-              });
-            },
+            prefixIcon: Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            suffixIcon: IconButton(
+              icon: Icon(
+                Icons.search,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                print(_userSearch);
+                setState(() {
+                  _isSearching = true;
+                  _userData = null;
+                });
+                _fetchData();
+              },
+            ),
           ),
+          onChanged: (String value) {
+            setState(() {
+              _userSearch = value;
+              // _userData = null;
+            });
+          },
         ),
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: _userData == null
-                ? [
-                    Center(
-                      child: Image.asset(
+      ),
+      body: _userData == null && _isSearching
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  // Image.asset(
+                  //   "assets/img/github.png",
+                  //   width: 100,
+                  //   height: 100,
+                  // ),
+                  CircularProgressIndicator(),
+                  Text("Searching user..."),
+                ],
+              ),
+            )
+          : _userData == null
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Image.asset(
                         "assets/img/github.png",
                         width: 100,
                         height: 100,
                       ),
+                      // CircularProgressIndicator(),
+                      Text("Search Users"),
+                    ],
+                  ),
+                )
+              : _userData["message"] == "Not Found"
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          // Image.asset(
+                          //   "assets/img/github.png",
+                          //   width: 100,
+                          //   height: 100,
+                          // ),
+                          // CircularProgresIndicator(),
+                          Text("No User found"),
+                        ],
+                      ),
                     )
-                  ]
-                : [
-                    Flex(
-                      direction: Axis.vertical,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 4,
-                          child: Container(
+                  : SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            // color: Colors.red,
                             width: double.infinity,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.black87,
-                                  Colors.black,
-                                ],
-                              ),
-                            ),
-                            child: Column(
+                            height: MediaQuery.of(context).size.height,
+                            child: Flex(
+                              direction: Axis.vertical,
                               children: <Widget>[
-                                SizedBox(
-                                  height: 10.0,
+                                //User data
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(
+                                    padding: EdgeInsets.all(
+                                      20.0,
+                                    ),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.black,
+                                          Colors.blueAccent,
+                                          Colors.black,
+                                        ],
+                                      ),
+                                    ),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        Container(
+                                          width: 200,
+                                          height: 200,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              100.0,
+                                            ),
+                                            border: Border.all(
+                                              width: 5.0,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              100.0,
+                                            ),
+                                            child: CachedNetworkImage(
+                                              imageUrl: _userData["avatar_url"],
+                                              width: 200,
+                                              height: 200,
+                                              placeholder: (context, url) {
+                                                Image.asset(
+                                                  "assets/img/github.png",
+                                                  width: 200,
+                                                  height: 200,
+                                                );
+                                              },
+                                            ),
+                                            // Image.network(
+                                            //   _userData["avatar_url"],
+                                            //   width: 200,
+                                            //   height: 200,
+                                            // ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          _userData["login"],
+                                          style: TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                            letterSpacing: 1.5,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                Text(
-                                  _userData == null
-                                      ? "No User found"
-                                      : _userData["login"],
-                                ),
-                                CachedNetworkImage(
-                                  width: 100,
-                                  height: 100,
-                                  imageUrl: _userData["avatar_url"],
-                                  placeholder: (context, url) {
-                                    return Image.asset("assets/img/github.png");
-                                  },
-                                  errorWidget: (context, url, error) =>
-                                      Icon(Icons.error),
+                                // List data
+                                Expanded(
+                                  flex: 4,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.grey,
+                                          Colors.white,
+                                          Colors.grey,
+                                        ],
+                                      ),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 10.0,
+                                      ),
+                                      child: Column(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Card(
+                                            color: Colors.white,
+                                            child: Container(
+                                              padding: EdgeInsets.all(
+                                                10.0,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Image.asset(
+                                                    "assets/img/following.png",
+                                                    width: 40,
+                                                    height: 40,
+                                                  ),
+                                                  Text(
+                                                    "Following",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    _userData["following"]
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          // SizedBox(
+                                          //   height: 20,
+                                          // ),
+                                          Card(
+                                            color: Colors.white,
+                                            child: Container(
+                                              padding: EdgeInsets.all(
+                                                10.0,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Image.asset(
+                                                    "assets/img/followers.png",
+                                                    width: 40,
+                                                    height: 40,
+                                                  ),
+                                                  Text(
+                                                    "Followers",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    _userData["followers"]
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          // SizedBox(
+                                          //   height: 20.0,
+                                          // ),
+                                          Card(
+                                            color: Colors.white,
+                                            child: Container(
+                                              padding: EdgeInsets.all(
+                                                10.0,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Image.asset(
+                                                    "assets/img/repo.png",
+                                                    width: 40,
+                                                    height: 40,
+                                                  ),
+                                                  Text(
+                                                    "Repositories",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 20.0,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    _userData["public_repos"]
+                                                        .toString(),
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20.0,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 )
                               ],
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 4,
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                                Colors.blue,
-                                Colors.lightBlueAccent,
-                                Colors.blueAccent,
-                              ]),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Row(children: <Widget>[
-                                  Image.asset("assets/img/following.png"),
-                                  _userData == null || _userData["login"]
-                                      ? Text("")
-                                      : Text("")
-                                ]),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
-                  ]));
+    );
   }
 }
