@@ -4,5 +4,5 @@ Simple app made using github api to get User's information
 
 # Screenshot
 
-[!screen-shot]("assets/../assets/img/screen.png")
+![screen-shot](assets/img/screen.png)
 
