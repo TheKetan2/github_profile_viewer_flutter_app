@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:github_profile_viewer_flutter_app/ui/screens/followers_screen.dart';
 import "package:http/http.dart" as http;
 import "dart:convert";
 import "package:cached_network_image/cached_network_image.dart";
@@ -16,17 +17,17 @@ class _HomeState extends State<Home> {
 
   _fetchData() async {
     http.Response userDataResponse = await http.get(_baseUrl + _userSearch);
-    // http.Response followersResponse =
-    //     await http.get(_baseUrl + _userSearch + "/followers");
-    // http.Response followingResponse =
-    //     await http.get(_baseUrl + _userSearch + "/following");
-    // http.Response userRepoResponse =
-    //     await http.get(_baseUrl + _userSearch + "/repos");
+    http.Response followersResponse =
+        await http.get(_baseUrl + _userSearch + "/followers");
+    http.Response followingResponse =
+        await http.get(_baseUrl + _userSearch + "/following");
+    http.Response userRepoResponse =
+        await http.get(_baseUrl + _userSearch + "/repos");
     setState(() {
       _userData = jsonDecode(userDataResponse.body);
-      // _userFollowers = jsonDecode(followersResponse.body);
-      // _userFollowing = jsonDecode(followingResponse.body);
-      // _userRepo = jsonDecode(userRepoResponse.body);
+      _userFollowers = jsonDecode(followersResponse.body);
+      _userFollowing = jsonDecode(followingResponse.body);
+      _userRepo = jsonDecode(userRepoResponse.body);
       _isSearching = false;
     });
     print(_userData);
@@ -254,125 +255,173 @@ class _HomeState extends State<Home> {
                                             // SizedBox(
                                             //   height: 10,
                                             // ),
-                                            Card(
-                                              color: Colors.white,
-                                              child: Container(
-                                                padding: EdgeInsets.all(
-                                                  15.0,
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    Image.asset(
-                                                      "assets/img/following.png",
-                                                      width: 40,
-                                                      height: 40,
+                                            GestureDetector(
+                                              onTap: () {
+                                                print("tapped");
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        FollowersScreen(
+                                                      data: _userFollowing,
+                                                      title: "Following",
                                                     ),
-                                                    Text(
-                                                      "Following",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                  ),
+                                                );
+                                              },
+                                              child: Card(
+                                                color: Colors.white,
+                                                child: Container(
+                                                  padding: EdgeInsets.all(
+                                                    15.0,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      Image.asset(
+                                                        "assets/img/following.png",
+                                                        width: 40,
+                                                        height: 40,
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      _userData["following"]
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                      Text(
+                                                        "Following",
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
                                                       ),
-                                                    )
-                                                  ],
+                                                      Text(
+                                                        _userData["following"]
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                             // SizedBox(
                                             //   height: 20,
                                             // ),
-                                            Card(
-                                              color: Colors.white,
-                                              child: Container(
-                                                padding: EdgeInsets.all(
-                                                  15.0,
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    Image.asset(
-                                                      "assets/img/followers.png",
-                                                      width: 40,
-                                                      height: 40,
+                                            GestureDetector(
+                                              onTap: () {
+                                                print("tapped");
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        FollowersScreen(
+                                                      data: _userFollowers,
+                                                      title: "Followers",
                                                     ),
-                                                    Text(
-                                                      "Followers",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                  ),
+                                                );
+                                              },
+                                              child: Card(
+                                                color: Colors.white,
+                                                child: Container(
+                                                  padding: EdgeInsets.all(
+                                                    15.0,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      Image.asset(
+                                                        "assets/img/followers.png",
+                                                        width: 40,
+                                                        height: 40,
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      _userData["followers"]
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                      Text(
+                                                        "Followers",
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
                                                       ),
-                                                    )
-                                                  ],
+                                                      Text(
+                                                        _userData["followers"]
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                             // SizedBox(
                                             //   height: 20.0,
                                             // ),
-                                            Card(
-                                              color: Colors.white,
-                                              child: Container(
-                                                padding: EdgeInsets.all(
-                                                  15.0,
-                                                ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: <Widget>[
-                                                    Image.asset(
-                                                      "assets/img/repo.png",
-                                                      width: 40,
-                                                      height: 40,
+                                            GestureDetector(
+                                              onTap: () {
+                                                print("tapped");
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        FollowersScreen(
+                                                      data: _userRepo,
+                                                      title: "Repositories",
+                                                      isRepo: true,
                                                     ),
-                                                    Text(
-                                                      "Repositories",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 20.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
+                                                  ),
+                                                );
+                                              },
+                                              child: Card(
+                                                color: Colors.white,
+                                                child: Container(
+                                                  padding: EdgeInsets.all(
+                                                    15.0,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: <Widget>[
+                                                      Image.asset(
+                                                        "assets/img/repo.png",
+                                                        width: 40,
+                                                        height: 40,
                                                       ),
-                                                    ),
-                                                    Text(
-                                                      _userData["public_repos"]
-                                                          .toString(),
-                                                      style: TextStyle(
+                                                      Text(
+                                                        "Repositories",
+                                                        style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20.0,
                                                           fontWeight:
-                                                              FontWeight.bold),
-                                                    )
-                                                  ],
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        _userData[
+                                                                "public_repos"]
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 20.0,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      )
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
                                             ),

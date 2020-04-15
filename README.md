@@ -4,5 +4,8 @@ Simple app made using github api to get User's information
 
 # Screenshot
 
-![screen-shot](assets/img/screen.png)
+![Home](assets/img/home.png)
+![Followers](assets/img/followers.png)
+![Following](assets/img/following.png)
+![Repos](assets/img/repos.png)
 
