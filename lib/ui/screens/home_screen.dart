@@ -131,12 +131,14 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                     )
-                  : SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
+                  : Flex(
+                      direction: Axis.vertical,
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      // crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 6,
+                          child: Container(
                             // color: Colors.red,
                             width: double.infinity,
                             height: MediaQuery.of(context).size.height,
@@ -146,219 +148,236 @@ class _HomeState extends State<Home> {
                                 //User data
                                 Expanded(
                                   flex: 3,
-                                  child: Container(
-                                    padding: EdgeInsets.all(
-                                      20.0,
-                                    ),
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.black,
-                                          Colors.blueAccent,
-                                          Colors.black,
+                                  child: Card(
+                                    child: Container(
+                                      padding: EdgeInsets.all(
+                                        20.0,
+                                      ),
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          10.0,
+                                        ),
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Color(0xfdb99b88),
+                                            Color(0xA770EF88),
+                                            Color(0xcf8bf388),
+                                            Color(0xfdb99b88)
+                                            // Colors.black,
+                                          ],
+                                        ),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Container(
+                                            width: 200,
+                                            height: 200,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                100.0,
+                                              ),
+                                              border: Border.all(
+                                                width: 5.0,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                100.0,
+                                              ),
+                                              child: CachedNetworkImage(
+                                                imageUrl:
+                                                    _userData["avatar_url"],
+                                                width: 200,
+                                                height: 200,
+                                                placeholder: (context, url) {
+                                                  Image.asset(
+                                                    "assets/img/github.png",
+                                                    width: 200,
+                                                    height: 200,
+                                                  );
+                                                },
+                                              ),
+                                              // Image.network(
+                                              //   _userData["avatar_url"],
+                                              //   width: 200,
+                                              //   height: 200,
+                                              // ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            _userData["login"],
+                                            style: TextStyle(
+                                              fontSize: 20.0,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 1.5,
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        Container(
-                                          width: 200,
-                                          height: 200,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              100.0,
-                                            ),
-                                            border: Border.all(
-                                              width: 5.0,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              100.0,
-                                            ),
-                                            child: CachedNetworkImage(
-                                              imageUrl: _userData["avatar_url"],
-                                              width: 200,
-                                              height: 200,
-                                              placeholder: (context, url) {
-                                                Image.asset(
-                                                  "assets/img/github.png",
-                                                  width: 200,
-                                                  height: 200,
-                                                );
-                                              },
-                                            ),
-                                            // Image.network(
-                                            //   _userData["avatar_url"],
-                                            //   width: 200,
-                                            //   height: 200,
-                                            // ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text(
-                                          _userData["login"],
-                                          style: TextStyle(
-                                            fontSize: 20.0,
-                                            fontWeight: FontWeight.bold,
-                                            letterSpacing: 1.5,
-                                          ),
-                                        ),
-                                      ],
                                     ),
                                   ),
                                 ),
                                 // List data
                                 Expanded(
-                                  flex: 4,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Colors.grey,
-                                          Colors.white,
-                                          Colors.grey,
-                                        ],
+                                  flex: 2,
+                                  child: Card(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(
+                                          10.0,
+                                        ),
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.white,
+                                            Colors.white,
+                                            Colors.white,
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 10.0,
-                                      ),
-                                      child: Column(
-                                        children: <Widget>[
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          Card(
-                                            color: Colors.white,
-                                            child: Container(
-                                              padding: EdgeInsets.all(
-                                                10.0,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  Image.asset(
-                                                    "assets/img/following.png",
-                                                    width: 40,
-                                                    height: 40,
-                                                  ),
-                                                  Text(
-                                                    "Following",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0,
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: <Widget>[
+                                            // SizedBox(
+                                            //   height: 10,
+                                            // ),
+                                            Card(
+                                              color: Colors.white,
+                                              child: Container(
+                                                padding: EdgeInsets.all(
+                                                  15.0,
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Image.asset(
+                                                      "assets/img/following.png",
+                                                      width: 40,
+                                                      height: 40,
                                                     ),
-                                                  ),
-                                                  Text(
-                                                    _userData["following"]
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          // SizedBox(
-                                          //   height: 20,
-                                          // ),
-                                          Card(
-                                            color: Colors.white,
-                                            child: Container(
-                                              padding: EdgeInsets.all(
-                                                10.0,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  Image.asset(
-                                                    "assets/img/followers.png",
-                                                    width: 40,
-                                                    height: 40,
-                                                  ),
-                                                  Text(
-                                                    "Followers",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    _userData["followers"]
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          // SizedBox(
-                                          //   height: 20.0,
-                                          // ),
-                                          Card(
-                                            color: Colors.white,
-                                            child: Container(
-                                              padding: EdgeInsets.all(
-                                                10.0,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  Image.asset(
-                                                    "assets/img/repo.png",
-                                                    width: 40,
-                                                    height: 40,
-                                                  ),
-                                                  Text(
-                                                    "Repositories",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    _userData["public_repos"]
-                                                        .toString(),
-                                                    style: TextStyle(
+                                                    Text(
+                                                      "Following",
+                                                      style: TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 20.0,
                                                         fontWeight:
-                                                            FontWeight.bold),
-                                                  )
-                                                ],
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      _userData["following"]
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                            // SizedBox(
+                                            //   height: 20,
+                                            // ),
+                                            Card(
+                                              color: Colors.white,
+                                              child: Container(
+                                                padding: EdgeInsets.all(
+                                                  15.0,
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Image.asset(
+                                                      "assets/img/followers.png",
+                                                      width: 40,
+                                                      height: 40,
+                                                    ),
+                                                    Text(
+                                                      "Followers",
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      _userData["followers"]
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            // SizedBox(
+                                            //   height: 20.0,
+                                            // ),
+                                            Card(
+                                              color: Colors.white,
+                                              child: Container(
+                                                padding: EdgeInsets.all(
+                                                  15.0,
+                                                ),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: <Widget>[
+                                                    Image.asset(
+                                                      "assets/img/repo.png",
+                                                      width: 40,
+                                                      height: 40,
+                                                    ),
+                                                    Text(
+                                                      "Repositories",
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 20.0,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      _userData["public_repos"]
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20.0,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -366,8 +385,8 @@ class _HomeState extends State<Home> {
                               ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
     );
   }
