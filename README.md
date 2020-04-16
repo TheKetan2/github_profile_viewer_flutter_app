@@ -1,4 +1,4 @@
-# github_profile_viewer_flutter_app
+# GitHub Profile Viewer App in Flutter
 
 Simple app made using github api to get User's information
 
